@@ -1,10 +1,13 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Controller implements ShopAPI{
     Scanner sc = new Scanner(System.in);
+    List<Buket> buketter = new ArrayList<>();
 
     public void runProgram(){
+        buketter = getBuketter();
         int choice = 0;
         printMainMenu();
         while (choice != 9) {
@@ -35,6 +38,20 @@ public class Controller implements ShopAPI{
 
     }
 
+    private void printMainMenu() {
+        System.out.println("1) vis buketter");
+        System.out.println("2) bestil buketter");
+        System.out.println("3) vis/rediger aktive bestillinger");
+        System.out.println("4) hent dagens bestillinger");
+        System.out.println("9) exit");
+    }
+
+    private void visBuketter() {
+        for (Buket buket: buketter ) {
+            System.out.println(buket);
+        }
+    }
+
     private void exit() {
     }
 
@@ -44,16 +61,21 @@ public class Controller implements ShopAPI{
     private void bestilBuketter() {
     }
 
-    private void visBuketter() {
-    }
 
-    private void printMainMenu() {
-    }
 
 
     @Override
     public List<Buket> getBuketter() {
-        return null;
+        Buket buket = null;
+        List<Buket> buketter = new ArrayList<>();
+        buket = new Buket(1,"Arranger selv bundt",225);
+        buketter.add(buket);
+        buket = new Buket(2,"Unika blomsterbuket",325);
+        buketter.add(buket);
+        buket = new Buket(3,"Trendy efterårsbuket",275);
+        buketter.add(buket);
+
+        return buketter;
     }
 
     @Override
