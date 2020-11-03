@@ -5,6 +5,7 @@ import java.util.List;
 public class Ordrer {
     static int counter = 0;
     int ordreID;
+    int phone;
     LocalDateTime createTime;
     List<Buket> buketter;
     String status;
@@ -14,6 +15,7 @@ public class Ordrer {
         this.createTime = LocalDateTime.now();
         this.buketter = new ArrayList<>();
         this.status = "CREATED";
+        counter++;
     }
 
     public int getOrdreID() {
@@ -38,5 +40,28 @@ public class Ordrer {
 
     public void addBuket(Buket buket) {
         this.buketter.add(buket);
+    }
+
+    public void setPhone(int phone) {
+        this.phone = phone;
+    }
+
+    public int getPrice() {
+        int price = 0;
+        for(Buket buket: buketter) {
+            price += buket.getBasePrice();
+        }
+        return price;
+    }
+
+    public String toString() {
+        int price = this.getPrice();
+        String show = "";
+        String buketterStr = "";
+        for(Buket buket: buketter) {
+            buketterStr += " " + buket.toString();
+        }
+        show = String.format("%d phone: %d, %s, price: %d, status: %s\n",ordreID,phone,buketterStr,price, status);
+        return show;
     }
 }
