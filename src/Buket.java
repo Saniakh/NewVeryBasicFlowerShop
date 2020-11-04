@@ -23,7 +23,7 @@ public class Buket {
 
     public String toString() {
         String show = "";
-        show = String.format("%d %s %d",id,name,basePrice);
+        show = String.format("%d,%s,%d",id,name,basePrice);
         return show;
     }
 }

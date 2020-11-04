@@ -27,6 +27,18 @@ public class Controller implements ShopAPI{
 
     private void visDagensOrdrer() {
         // TODO:hent fra fil og lav stat
+        File file = new File("resources/bestillinger.csv");
+        try {
+
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line = "";
+            while((line = br.readLine())!=null) {
+                String[] lineArr = line.split(";");
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void printMainMenu() {
@@ -41,6 +53,7 @@ public class Controller implements ShopAPI{
         for (Buket buket: buketter ) {
             System.out.println(buket);
         }
+        printMainMenu();
     }
 
     private void bestilBuketter() {
@@ -61,7 +74,7 @@ public class Controller implements ShopAPI{
                 try {
                     buket = getBuketById(buketId);
                     ordrer.addBuket(buket);
-                } catch (IndexOutOfBoundsException e) {
+                } catch (NoSuchBuketException e) {
                     e.printStackTrace();
                     choice = 99;
                 }
@@ -86,6 +99,7 @@ public class Controller implements ShopAPI{
     private void visAktiveBestillinger() {
         int choice = 0;
         System.out.println("Pick orderid to mark as done (99 to skip)");
+        // TODO:filtrer på status
         for (Ordrer ordrer: bestillinger ) {
             System.out.println(ordrer);
         }
@@ -106,15 +120,23 @@ public class Controller implements ShopAPI{
 
     @Override
     public List<Buket> getBuketter() {
-        Buket buket = null;
         List<Buket> buketter = new ArrayList<>();
-        buket = new Buket(1,"Arranger selv bundt",225);
-        buketter.add(buket);
-        buket = new Buket(2,"Unika blomsterbuket",325);
-        buketter.add(buket);
-        buket = new Buket(3,"Trendy efterårsbuket",275);
-        buketter.add(buket);
-
+        Buket buket = null;
+        File file = new File("resources/fc");
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line = "";
+            int counter = 1;
+            while((line = br.readLine()) != null) {
+                String[] lineArr = line.split(",");
+                buket = new Buket(counter,lineArr[0],Integer.parseInt(lineArr[1]));
+                buketter.add(buket);
+                counter++;
+            }
+        } catch (IOException e ) {
+            e.printStackTrace();
+        }
         return buketter;
     }
 
@@ -133,11 +155,15 @@ public class Controller implements ShopAPI{
     }
 
     @Override
-    public Buket getBuketById(int id) throws IndexOutOfBoundsException {
+    public Buket getBuketById(int id) throws NoSuchBuketException {
         Buket buket = null;
-        buket = buketter.get(id);
+        try {
+            buket = buketter.get(id);
+        } catch (IndexOutOfBoundsException e) {
+            throw new NoSuchBuketException ("Buket findes ikke");
+        }
         if (buket == null) {
-            throw new IndexOutOfBoundsException ("Buket findes ikke");
+            throw new NoSuchBuketException ("Buket findes ikke");
         }
         return buket;
     }

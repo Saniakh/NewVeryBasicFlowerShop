@@ -57,11 +57,14 @@ public class Ordrer {
     public String toString() {
         int price = this.getPrice();
         String show = "";
-        String buketterStr = "";
+        String buketterStr = "@";
         for(Buket buket: buketter) {
-            buketterStr += " " + buket.toString();
+            buketterStr += buket.toString();
         }
-        show = String.format("%d phone: %d, %s, price: %d, status: %s\n",ordreID,phone,buketterStr,price, status);
+        buketterStr += "@";
+        //show = String.format("%d phone: %d, %s, price: %d, status: %s\n",ordreID,phone,buketterStr,price, status);
+        show = String.format("%d;%d;%s;%d;%s",ordreID,phone,buketterStr,price, status);
         return show;
     }
+
 }
